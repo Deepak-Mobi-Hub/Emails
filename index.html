@@ -33,9 +33,7 @@
         #email-body ul, #camp-email-body ul { list-style-type: disc; margin-left: 20px; }
         
         /* Auto-save indicator */
-        #save-status {
-            transition: opacity 0.5s ease-in-out;
-        }
+        #save-status { transition: opacity 0.5s ease-in-out; }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-100 h-screen flex overflow-hidden transition-colors duration-200">
@@ -49,32 +47,25 @@
         
         <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
             <button onclick="switchView('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-squares-four text-lg"></i>
-                <span>Dashboard</span>
+                <i class="ph ph-squares-four text-lg"></i><span>Dashboard</span>
             </button>
             <button onclick="switchView('campaigns')" id="nav-campaigns" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-megaphone text-lg"></i>
-                <span>Campaigns</span>
+                <i class="ph ph-megaphone text-lg"></i><span>Campaigns</span>
             </button>
             <button onclick="switchView('compose')" id="nav-compose" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-note-pencil text-lg"></i>
-                <span>Compose / Quick Send</span>
+                <i class="ph ph-note-pencil text-lg"></i><span>Compose / Quick Send</span>
             </button>
             <button onclick="switchView('queue')" id="nav-queue" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-list-dashes text-lg"></i>
-                <span>Queue</span>
+                <i class="ph ph-list-dashes text-lg"></i><span>Queue</span>
             </button>
             <button onclick="switchView('sent')" id="nav-sent" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-check-circle text-lg"></i>
-                <span>Sent Logs</span>
+                <i class="ph ph-check-circle text-lg"></i><span>Sent Logs</span>
             </button>
             <button onclick="switchView('followups')" id="nav-followups" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-arrows-clockwise text-lg"></i>
-                <span>Follow Ups</span>
+                <i class="ph ph-arrows-clockwise text-lg"></i><span>Follow Ups</span>
             </button>
             <button onclick="switchView('settings')" id="nav-settings" class="w-full flex items-center space-x-3 px-6 py-3 text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-r-4 border-transparent">
-                <i class="ph ph-gear text-lg"></i>
-                <span>Configuration</span>
+                <i class="ph ph-gear text-lg"></i><span>Configuration</span>
             </button>
             
             <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
@@ -122,15 +113,12 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <!-- Auto Save Indicator -->
                 <div id="save-status" class="opacity-0 text-xs text-gray-400 dark:text-gray-500 font-medium flex items-center gap-1">
                     <i class="ph-bold ph-check"></i> Saved
                 </div>
-
                 <div id="auth-section">
                     <button onclick="initGoogleAuth()" class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">
-                        <i class="ph ph-google-logo"></i>
-                        <span>Connect Gmail</span>
+                        <i class="ph ph-google-logo"></i><span>Connect Gmail</span>
                     </button>
                 </div>
                 <div id="user-section" class="hidden flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-600">
@@ -142,7 +130,7 @@
             </div>
         </header>
 
-        <!-- VIEWS -->
+        <!-- VIEWPORT -->
         <main class="flex-1 overflow-auto p-8 relative">
 
             <!-- MODALS -->
@@ -172,9 +160,7 @@
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button onclick="closeAddLeadModal()" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
-                        <button onclick="addNewLead()" class="px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors flex items-center gap-2">
-                            Add to Queue
-                        </button>
+                        <button onclick="addNewLead()" class="px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors">Add to Queue</button>
                     </div>
                 </div>
             </div>
@@ -262,7 +248,7 @@
                 </div>
             </div>
 
-            <!-- CAMPAIGN MODAL (NEW) -->
+            <!-- 4. CAMPAIGN MODAL (NEW) -->
             <div id="campaign-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 fade-in backdrop-blur-sm p-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-3xl border border-gray-200 dark:border-gray-700 relative max-h-[90vh] flex flex-col">
                     <button onclick="closeCampaignModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
@@ -323,10 +309,13 @@
                 </div>
             </div>
 
+            <!-- ======================= -->
+            <!-- VIEWS                     -->
+            <!-- ======================= -->
+
             <!-- DASHBOARD VIEW -->
             <div id="view-dashboard" class="hidden-view fade-in">
                 <div class="max-w-5xl mx-auto space-y-6">
-                    <!-- Welcome / Status -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Welcome to Mobi-Hub</h2>
@@ -340,9 +329,7 @@
                         </div>
                     </div>
 
-                    <!-- Stats Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Volume Stats -->
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                              <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Sent Volume</h3>
@@ -364,7 +351,6 @@
                             </div>
                         </div>
 
-                        <!-- Queue Status -->
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">In Queue</h3>
@@ -373,7 +359,6 @@
                             <span id="dash-queue" class="text-3xl font-bold text-gray-800 dark:text-white">0</span>
                         </div>
 
-                        <!-- Engagement -->
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Replies Detected</h3>
@@ -383,7 +368,6 @@
                         </div>
                     </div>
 
-                    <!-- Monthly History Table -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                              <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center gap-2">
@@ -403,7 +387,6 @@
                         </table>
                     </div>
                     
-                    <!-- Quick Actions -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <button onclick="switchView('campaigns')" class="bg-blue-600 hover:bg-blue-700 text-white p-6 rounded-xl shadow-sm border border-transparent transition-all text-left group">
                             <div class="flex items-center justify-between">
@@ -422,58 +405,31 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- SETTINGS VIEW -->
-            <div id="view-settings" class="hidden-view max-w-2xl mx-auto fade-in">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-sliders"></i> Configuration</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Google Cloud Client ID</label>
-                            <input type="text" id="client-id-input" placeholder="e.g., 123456789-abc.apps.googleusercontent.com" 
-                                class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-white dark:bg-gray-700 dark:text-white">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                Required for secure Gmail connection. <a href="https://console.cloud.google.com/" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Get it here</a>.
-                            </p>
-                        </div>
-                        <button onclick="saveSettings()" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors">Save ID</button>
-                        
-                        <!-- DATA MANAGEMENT SECTION -->
-                        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                            <h4 class="text-sm font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
-                                <i class="ph ph-database"></i> Data Backup & Restore
-                            </h4>
-                            <div class="flex gap-4">
-                                <button onclick="downloadBackup()" class="flex-1 flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-4 py-2 rounded-md text-sm font-medium transition-colors border border-blue-200 dark:border-blue-800">
-                                    <i class="ph-bold ph-download-simple"></i> Download Backup
-                                </button>
-                                <label class="flex-1 flex items-center justify-center gap-2 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium transition-colors border border-gray-200 dark:border-gray-600 cursor-pointer">
-                                    <i class="ph-bold ph-upload-simple"></i> Restore Data
-                                    <input type="file" accept=".json" onchange="restoreBackup(this)" class="hidden" />
-                                </label>
-                            </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                Save your data (queue, logs, templates) to a file before clearing cache or switching computers.
-                            </p>
-                        </div>
 
-                        <!-- TROUBLESHOOTING SECTION -->
-                        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mt-6" id="trouble-section">
-                            <h4 class="text-sm font-bold text-red-800 dark:text-red-300 flex items-center gap-2">
-                                <i class="ph ph-warning-octagon"></i> Troubleshooting: "Error 400"
-                            </h4>
-                            <div id="trouble-content" class="text-xs text-red-700 dark:text-red-300 mt-2">
-                                <p class="mb-2">If you see <strong>redirect_uri_mismatch</strong>, check the URL below:</p>
-                                <code class="bg-white dark:bg-gray-800 border border-red-200 dark:border-red-900/50 px-2 py-0.5 rounded font-mono select-all block mb-2 w-max" id="current-origin">...</code>
-                                <ol class="list-decimal list-inside space-y-1">
-                                    <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="underline font-bold">Google Cloud Credentials</a>.</li>
-                                    <li>Edit your <strong>OAuth 2.0 Client ID</strong>.</li>
-                                    <li>Add the URL above to <strong>Authorized JavaScript origins</strong>.</li>
-                                    <li>Save and wait 5 minutes.</li>
-                                </ol>
-                            </div>
-                        </div>
-
+            <!-- CAMPAIGNS VIEW -->
+            <div id="view-campaigns" class="hidden-view fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-700">
+                        <h2 class="text-lg font-bold flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-megaphone"></i> Campaigns</h2>
+                        <button onclick="openCampaignModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+                            <i class="ph-bold ph-plus"></i> Create Campaign
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 font-medium border-b border-gray-200 dark:border-gray-600">
+                                <tr>
+                                    <th class="px-6 py-3">Campaign Name</th>
+                                    <th class="px-6 py-3">Created</th>
+                                    <th class="px-6 py-3 w-1/3">Progress</th>
+                                    <th class="px-6 py-3">Sent / Replied / Total</th>
+                                    <th class="px-6 py-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaigns-body" class="divide-y divide-gray-100 dark:divide-gray-700">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -537,14 +493,13 @@
                                     </div>
                                     <div id="email-body" contenteditable="true" class="w-full p-3 text-sm outline-none flex-1 overflow-y-auto min-h-[300px] text-gray-800 dark:text-white font-sans"></div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <!-- NEW RUN CAMPAIGN BLOCK -->
+                    <!-- RUN CAMPAIGN BLOCK -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                         <h3 class="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4 border-b dark:border-gray-700 pb-2">Run Automated Campaign</h3>
                         
@@ -568,9 +523,9 @@
                         </div>
                     </div>
 
+                    <!-- SINGLE SEND -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                         <h3 class="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4 border-b dark:border-gray-700 pb-2">Single Send (Quick)</h3>
-                        
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wide">Recipient Email</label>
@@ -581,34 +536,34 @@
                             </button>
                         </div>
                     </div>
-                    
-                </div>
-            </div>
 
-            <!-- CAMPAIGNS VIEW -->
-            <div id="view-campaigns" class="hidden-view fade-in">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-700">
-                        <h2 class="text-lg font-bold flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-megaphone"></i> Campaigns</h2>
-                        <button onclick="openCampaignModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
-                            <i class="ph-bold ph-plus"></i> Create Campaign
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 font-medium border-b border-gray-200 dark:border-gray-600">
-                                <tr>
-                                    <th class="px-6 py-3">Campaign Name</th>
-                                    <th class="px-6 py-3">Created</th>
-                                    <th class="px-6 py-3 w-1/3">Progress</th>
-                                    <th class="px-6 py-3">Sent / Replied / Total</th>
-                                    <th class="px-6 py-3 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="campaigns-body" class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <!-- Populated by JS -->
-                            </tbody>
-                        </table>
+                    <!-- ADD LEADS BLOCK -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                        <h3 class="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4 border-b dark:border-gray-700 pb-2">Add Leads to Queue</h3>
+                        
+                        <!-- MANUAL ENTRY -->
+                        <div class="mb-4">
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Quick Add / Paste List</label>
+                            <textarea id="manual-input" placeholder="email@example.com, Name, Company&#10;another@example.com" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white h-24 resize-none mb-2"></textarea>
+                            <button onclick="handleManualAdd()" class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs font-medium py-2 rounded-md transition-colors border border-gray-200 dark:border-gray-600">
+                                Add to Queue
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 my-4">
+                            <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                            <span class="text-[10px] text-gray-400 uppercase">OR</span>
+                            <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
+                        </div>
+
+                        <label class="w-full flex flex-col items-center justify-center space-y-2 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 cursor-pointer rounded-lg py-6 text-gray-500 dark:text-gray-400 hover:text-blue-600 transition-colors bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 group">
+                            <div class="p-2 bg-white dark:bg-gray-600 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                                <i class="ph ph-upload-simple text-xl dark:text-gray-200"></i>
+                            </div>
+                            <span class="text-sm font-medium">Upload CSV</span>
+                            <input type="file" accept=".csv" onchange="handleFileUpload(this)" class="hidden" />
+                        </label>
+                        <p class="text-[10px] text-gray-400 dark:text-gray-500 mt-2 text-center">Format: email, first_name, company</p>
                     </div>
                 </div>
             </div>
@@ -735,11 +690,69 @@
                 </div>
             </div>
 
+            <!-- SETTINGS VIEW -->
+            <div id="view-settings" class="hidden-view max-w-2xl mx-auto fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-sliders"></i> Configuration</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Google Cloud Client ID</label>
+                            <input type="text" id="client-id-input" placeholder="e.g., 123456789-abc.apps.googleusercontent.com" 
+                                class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-white dark:bg-gray-700 dark:text-white">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                Required for secure Gmail connection. <a href="https://console.cloud.google.com/" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Get it here</a>.
+                            </p>
+                        </div>
+                        <button onclick="saveSettings()" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors">Save ID</button>
+                        
+                        <!-- DATA MANAGEMENT SECTION -->
+                        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <h4 class="text-sm font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
+                                <i class="ph ph-database"></i> Data Backup & Restore
+                            </h4>
+                            <div class="flex gap-4">
+                                <button onclick="downloadBackup()" class="flex-1 flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-4 py-2 rounded-md text-sm font-medium transition-colors border border-blue-200 dark:border-blue-800">
+                                    <i class="ph-bold ph-download-simple"></i> Download Backup
+                                </button>
+                                <label class="flex-1 flex items-center justify-center gap-2 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 px-4 py-2 rounded-md text-sm font-medium transition-colors border border-gray-200 dark:border-gray-600 cursor-pointer">
+                                    <i class="ph-bold ph-upload-simple"></i> Restore Data
+                                    <input type="file" accept=".json" onchange="restoreBackup(this)" class="hidden" />
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                Save your data (queue, logs, templates) to a file before clearing cache or switching computers.
+                            </p>
+                        </div>
+
+                        <!-- TROUBLESHOOTING SECTION -->
+                        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mt-6" id="trouble-section">
+                            <h4 class="text-sm font-bold text-red-800 dark:text-red-300 flex items-center gap-2">
+                                <i class="ph ph-warning-octagon"></i> Troubleshooting: "Error 400"
+                            </h4>
+                            <div id="trouble-content" class="text-xs text-red-700 dark:text-red-300 mt-2">
+                                <p class="mb-2">If you see <strong>redirect_uri_mismatch</strong>, check the URL below:</p>
+                                <code class="bg-white dark:bg-gray-800 border border-red-200 dark:border-red-900/50 px-2 py-0.5 rounded font-mono select-all block mb-2 w-max" id="current-origin">...</code>
+                                <ol class="list-decimal list-inside space-y-1">
+                                    <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="underline font-bold">Google Cloud Credentials</a>.</li>
+                                    <li>Edit your <strong>OAuth 2.0 Client ID</strong>.</li>
+                                    <li>Add the URL above to <strong>Authorized JavaScript origins</strong>.</li>
+                                    <li>Save and wait 5 minutes.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- HELPER ---
+        const generateId = () => 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
         // --- CONFIGURATION ---
         const EMBEDDED_CLIENT_ID = "195749587118-dg3i2gogrq13bns5i2llivlafr21ncav.apps.googleusercontent.com";
         const SIGNATURE = `\n\n---\n📧 deepak@mobi-hub.com\n📞 +44 7379 320338\n🌍 https://www.mobi-hub.co.uk/`;
@@ -1132,7 +1145,7 @@
                     if (seenEmails.has(email)) continue;
 
                     newContacts.push({
-                        id: Date.now() + Math.random(),
+                        id: generateId(),
                         email,
                         first_name: cName,
                         company,
@@ -1432,7 +1445,7 @@
             }
 
             const newLead = {
-                id: Date.now() + Math.random(),
+                id: generateId(),
                 email,
                 first_name: first_name || 'there',
                 company,
@@ -1449,8 +1462,8 @@
 
         // --- CONTACT ACTIONS (QUICK SEND / HISTORY) ---
         function openContactActionModal(id) {
-            currentContactId = id;
-            const contact = state.queue.find(c => c.id === id);
+            currentContactId = id.toString();
+            const contact = state.queue.find(c => c.id.toString() === currentContactId);
             if (!contact) return;
 
             document.getElementById('contact-action-title').textContent = contact.first_name + (contact.company ? ` (${contact.company})` : '');
@@ -1522,41 +1535,47 @@
 
             const [cat, key] = val.split('|');
             const template = allTemplates[cat][key];
-            if(!template) return;
+            if(!template) {
+                alert('Template not found.');
+                return;
+            }
 
-            const contact = state.queue.find(c => c.id === currentContactId);
-            if(!contact) return;
+            const contact = state.queue.find(c => c.id.toString() === currentContactId.toString());
+            if(!contact) {
+                alert('Contact not found in queue.');
+                return;
+            }
 
             const btn = document.getElementById('btn-contact-send');
             btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Sending...';
             btn.disabled = true;
 
-            let processedSubject = processSpintax(template.subject);
-            let processedBody = processSpintax(template.body.replace(/\n/g, '<br>'));
-            
-            processedBody = processedBody
-                .replace(/{{first_name}}/gi, contact.first_name || '') 
-                .replace(/{first_name}/gi, contact.first_name || '')   
-                .replace(/{name}/gi, contact.first_name || '')         
-                .replace(/{{name}}/gi, contact.first_name || '')       
-                .replace(/{{company}}/gi, contact.company || '')       
-                .replace(/{company}/gi, contact.company || '');        
-
-            if (!processedBody.includes("deepak@mobi-hub.com")) processedBody += SIGNATURE.replace(/\n/g, '<br>');
-            if (!processedBody.includes("reply 'unsubscribe'")) processedBody += `<br><br>If this email isn't relevant, please reply 'unsubscribe' to let me know.`;
-
-            const emailContent = [
-                `To: ${contact.email}`,
-                `Subject: ${processedSubject}`,
-                `Content-Type: text/html; charset="UTF-8"`,
-                `MIME-Version: 1.0`,
-                ``,
-                processedBody
-            ].join('\n');
-
-            const raw = toBase64Url(emailContent);
-
             try {
+                let processedSubject = processSpintax(template.subject);
+                let processedBody = processSpintax(template.body.replace(/\n/g, '<br>'));
+                
+                processedBody = processedBody
+                    .replace(/{{first_name}}/gi, contact.first_name || '') 
+                    .replace(/{first_name}/gi, contact.first_name || '')   
+                    .replace(/{name}/gi, contact.first_name || '')         
+                    .replace(/{{name}}/gi, contact.first_name || '')       
+                    .replace(/{{company}}/gi, contact.company || '')       
+                    .replace(/{company}/gi, contact.company || '');        
+
+                if (!processedBody.includes("deepak@mobi-hub.com")) processedBody += SIGNATURE.replace(/\n/g, '<br>');
+                if (!processedBody.includes("reply 'unsubscribe'")) processedBody += `<br><br>If this email isn't relevant, please reply 'unsubscribe' to let me know.`;
+
+                const emailContent = [
+                    `To: ${contact.email}`,
+                    `Subject: ${processedSubject}`,
+                    `Content-Type: text/html; charset="UTF-8"`,
+                    `MIME-Version: 1.0`,
+                    ``,
+                    processedBody
+                ].join('\n');
+
+                const raw = toBase64Url(emailContent);
+
                 const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${state.token}`, 'Content-Type': 'application/json' },
@@ -1567,7 +1586,7 @@
 
                 const now = new Date();
                 const newLog = {
-                    id: Date.now() + Math.random(),
+                    id: generateId(),
                     email: contact.email,
                     date: now.toISOString().split('T')[0],
                     timestamp: now.toISOString(),
@@ -1629,7 +1648,7 @@
                 // Add to Sent Logs manually
                 const now = new Date();
                 const newLog = {
-                    id: Date.now() + Math.random(),
+                    id: generateId(),
                     email: testEmail,
                     date: now.toISOString().split('T')[0],
                     timestamp: now.toISOString(),
@@ -1654,7 +1673,7 @@
         // --- QUEUE ACTIONS ---
         function deleteItem(id) {
             if (confirm('Remove this item from queue?')) {
-                state.queue = state.queue.filter(item => item.id !== id);
+                state.queue = state.queue.filter(item => item.id.toString() !== id.toString());
                 saveQueue(); renderQueue(); updateDashboard();
             }
         }
@@ -1668,6 +1687,40 @@
                 state.queue = [];
                 saveQueue(); renderQueue(); updateDashboard(); 
             }
+        }
+
+        function openEditModal(id) {
+            const item = state.queue.find(i => i.id.toString() === id.toString());
+            if (!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-email').value = item.email || '';
+            document.getElementById('edit-name').value = item.first_name || '';
+            document.getElementById('edit-company').value = item.company || '';
+            
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function saveEditItem() {
+            const id = document.getElementById('edit-id').value;
+            const email = document.getElementById('edit-email').value;
+            const name = document.getElementById('edit-name').value;
+            const company = document.getElementById('edit-company').value;
+
+            state.queue = state.queue.map(item => {
+                if (item.id.toString() === id.toString()) {
+                    return { ...item, email, first_name: name, company };
+                }
+                return item;
+            });
+
+            saveQueue();
+            renderQueue();
+            closeEditModal();
         }
 
         // --- AUTOMATED SENDING LOGIC ---
@@ -1929,14 +1982,14 @@
                         }
                     </td>
                     <td class="px-6 py-3 text-right whitespace-nowrap">
-                        <button onclick="openContactActionModal(${item.id})" class="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 mr-3" title="Quick Send / History">
+                        <button onclick="openContactActionModal('${item.id}')" class="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 mr-3" title="Quick Send / History">
                             <i class="ph-bold ph-paper-plane-tilt"></i>
                         </button>
                         ${item.status === 'pending' ? `
-                        <button onclick="openEditModal(${item.id})" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mr-3" title="Edit">
+                        <button onclick="openEditModal('${item.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mr-3" title="Edit">
                             <i class="ph-bold ph-pencil-simple"></i>
                         </button>
-                        <button onclick="deleteItem(${item.id})" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Remove">
+                        <button onclick="deleteItem('${item.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Remove">
                             <i class="ph-bold ph-trash"></i>
                         </button>
                         ` : ''}
@@ -1975,7 +2028,7 @@
                         }
                     </td>
                     <td class="px-6 py-3 text-right">
-                        <button onclick="deleteSentLog(${log.id})" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Delete Log">
+                        <button onclick="deleteSentLog('${log.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Delete Log">
                             <i class="ph-bold ph-trash"></i>
                         </button>
                     </td>
