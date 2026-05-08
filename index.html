@@ -133,7 +133,9 @@
         <!-- VIEWPORT -->
         <main class="flex-1 overflow-auto p-8 relative">
 
-            <!-- MODALS -->
+            <!-- ========================= -->
+            <!-- ALL MODALS                -->
+            <!-- ========================= -->
 
             <!-- 1. ADD LEAD MODAL -->
             <div id="add-lead-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 fade-in backdrop-blur-sm">
@@ -146,16 +148,16 @@
                     </h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Email Address *</label>
-                            <input id="add-email" type="email" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow" placeholder="lead@company.com">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Company</label>
+                            <input id="add-company" type="text" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow" placeholder="Company LLC">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">First Name</label>
                             <input id="add-name" type="text" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow" placeholder="John">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Company</label>
-                            <input id="add-company" type="text" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow" placeholder="Company LLC">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Email Address *</label>
+                            <input id="add-email" type="email" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow" placeholder="lead@company.com">
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
@@ -177,16 +179,16 @@
                     <input type="hidden" id="edit-id">
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Email Address</label>
-                            <input id="edit-email" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Company</label>
+                            <input id="edit-company" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">First Name</label>
                             <input id="edit-name" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Company</label>
-                            <input id="edit-company" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase">Email Address</label>
+                            <input id="edit-email" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700 dark:text-white transition-shadow">
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
@@ -221,7 +223,7 @@
                                     Send Now
                                 </button>
                             </div>
-                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-2">This instantly sends the email directly to them. It does not remove them from automated queues.</p>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-2">This instantly sends the email and removes them from the automated queue.</p>
                         </div>
                         
                         <!-- Sent History Area -->
@@ -309,9 +311,9 @@
                 </div>
             </div>
 
-            <!-- ======================= -->
-            <!-- VIEWS                     -->
-            <!-- ======================= -->
+            <!-- ========================= -->
+            <!-- ALL MAIN VIEWS            -->
+            <!-- ========================= -->
 
             <!-- DASHBOARD VIEW -->
             <div id="view-dashboard" class="hidden-view fade-in">
@@ -510,11 +512,11 @@
                             </div>
                             
                             <div class="flex gap-2">
-                                <button id="btn-start" onclick="toggleSending(true)" class="flex-1 flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-md font-medium transition-all shadow-sm hover:shadow">
+                                <button onclick="toggleSending(true)" class="btn-start-camp flex-1 flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-md font-medium transition-all shadow-sm hover:shadow">
                                     <i class="ph ph-play-circle text-lg"></i>
                                     <span>Start</span>
                                 </button>
-                                <button id="btn-pause" onclick="toggleSending(false)" class="hidden flex-1 flex items-center justify-center space-x-2 bg-orange-100 hover:bg-orange-200 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 py-2.5 rounded-md font-medium transition-colors">
+                                <button onclick="toggleSending(false)" class="btn-pause-camp hidden flex-1 flex items-center justify-center space-x-2 bg-orange-100 hover:bg-orange-200 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 py-2.5 rounded-md font-medium transition-colors">
                                     <i class="ph ph-pause-circle text-lg"></i>
                                     <span>Pause</span>
                                 </button>
@@ -1171,7 +1173,7 @@
                 };
 
                 state.campaigns.unshift(newCamp);
-                state.queue = [...state.queue, ...newContacts];
+                state.queue = [...newContacts, ...state.queue];
                 
                 saveCampaigns();
                 saveQueue();
@@ -1453,12 +1455,114 @@
                 campaignId: null
             };
 
-            state.queue.push(newLead);
+            state.queue.unshift(newLead);
             saveQueue();
             renderQueue();
             updateDashboard();
             closeAddLeadModal();
         }
+
+        function handleManualAdd() {
+            const input = document.getElementById('manual-input').value;
+            if (!input.trim()) {
+                alert("Please paste some emails first.");
+                return;
+            }
+            
+            const lines = input.split('\n');
+            let addedCount = 0;
+            const seenEmails = new Set(state.queue.map(q => q.email));
+            const newContacts = [];
+
+            lines.forEach(line => {
+                if (!line.trim()) return;
+                
+                const parts = line.split(',').map(p => p.trim());
+                const email = parts[0];
+                
+                if (email && email.includes('@') && !seenEmails.has(email)) {
+                    newContacts.push({
+                        id: generateId(),
+                        email: email,
+                        first_name: parts[1] || 'there',
+                        company: parts[2] || '',
+                        status: 'pending',
+                        campaignId: null
+                    });
+                    seenEmails.add(email);
+                    addedCount++;
+                }
+            });
+
+            if (addedCount > 0) {
+                state.queue = [...newContacts, ...state.queue];
+                saveQueue();
+                renderQueue();
+                updateDashboard();
+                alert(`Added ${addedCount} contacts to queue.`);
+                document.getElementById('manual-input').value = ''; 
+            } else {
+                alert("No new valid emails found.");
+            }
+        }
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const text = event.target.result;
+                const lines = text.split('\n');
+                const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
+                
+                const newContacts = [];
+                const seenEmails = new Set(state.queue.map(q => q.email));
+                
+                const idxEmail = headers.findIndex(h => h.includes('email'));
+                const idxName = headers.findIndex(h => h.includes('first') || h.includes('name'));
+                const idxCompany = headers.findIndex(h => h.includes('company'));
+
+                if (idxEmail === -1) {
+                    alert("CSV must have an 'email' column header.");
+                    return;
+                }
+
+                let importedCount = 0;
+
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.trim().replace(/^"|"$/g, ''));
+                    
+                    const email = row[idxEmail];
+                    const name = idxName > -1 ? row[idxName] : 'there';
+                    const company = idxCompany > -1 ? row[idxCompany] : '';
+
+                    if (!email || !email.includes('@')) continue;
+                    if (seenEmails.has(email)) continue;
+
+                    newContacts.push({
+                        id: generateId(),
+                        email,
+                        first_name: name,
+                        company,
+                        status: 'pending',
+                        campaignId: null
+                    });
+                    seenEmails.add(email);
+                    importedCount++;
+                }
+                
+                state.queue = [...newContacts, ...state.queue];
+                saveQueue();
+                renderQueue();
+                updateDashboard(); 
+                alert(`Imported ${importedCount} contacts.`); 
+                input.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
 
         // --- CONTACT ACTIONS (QUICK SEND / HISTORY) ---
         function openContactActionModal(id) {
@@ -1596,11 +1700,17 @@
 
                 state.sentLog.unshift(newLog);
                 localStorage.setItem('gsafe_sent_log', JSON.stringify(state.sentLog));
+                
+                state.queue = state.queue.filter(q => q.id.toString() !== currentContactId.toString());
+                saveQueue();
+
                 renderSentLog();
                 updateDashboard();
                 renderContactHistory(contact.email);
+                renderQueue();
                 
                 alert('Email sent to ' + contact.email);
+                closeContactActionModal();
                 
             } catch (error) {
                 console.error(error);
@@ -1733,19 +1843,16 @@
                 state.runningCampaignId = sel ? sel.value : 'all';
             }
 
-            const btnStart = document.getElementById('btn-start');
-            const btnPause = document.getElementById('btn-pause');
+            document.querySelectorAll('.btn-start-camp').forEach(el => el.classList.toggle('hidden', enable));
+            document.querySelectorAll('.btn-pause-camp').forEach(el => el.classList.toggle('hidden', !enable));
+
             const statusInd = document.getElementById('status-indicator');
             const pausedInd = document.getElementById('paused-indicator');
 
             if (enable) {
-                if(btnStart) btnStart.classList.add('hidden');
-                if(btnPause) btnPause.classList.remove('hidden');
                 if(statusInd) statusInd.classList.remove('hidden');
                 if(pausedInd) pausedInd.classList.add('hidden');
             } else {
-                if(btnStart) btnStart.classList.remove('hidden');
-                if(btnPause) btnPause.classList.add('hidden');
                 if(statusInd) statusInd.classList.add('hidden');
                 if(pausedInd) pausedInd.classList.remove('hidden');
                 updateStatus("Paused by user");
@@ -1794,7 +1901,6 @@
             updateStatus(`Sending to ${pending.email}...`);
 
             try {
-                // If the queue item has its own subject/body (from a Campaign), use it. Otherwise, use Quick Send Compose inputs.
                 let rawSubject = pending.subject || state.subject;
                 let rawBody = pending.body || state.body;
 
@@ -1939,7 +2045,7 @@
                 } else {
                     dashStatus.innerHTML = `<span class="w-3 h-3 rounded-full bg-gray-400"></span> Paused`;
                     dashStatus.className = "text-lg font-bold text-gray-500 flex items-center gap-2 md:justify-end";
-                    updateStatus("Paused by user");
+                    if(!state.isSending) updateStatus("Paused by user");
                 }
             }
             
