@@ -113,12 +113,15 @@
             </div>
 
             <div class="flex items-center space-x-4">
+                <!-- Auto Save Indicator -->
                 <div id="save-status" class="opacity-0 text-xs text-gray-400 dark:text-gray-500 font-medium flex items-center gap-1">
                     <i class="ph-bold ph-check"></i> Saved
                 </div>
+
                 <div id="auth-section">
                     <button onclick="initGoogleAuth()" class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">
-                        <i class="ph ph-google-logo"></i><span>Connect Gmail</span>
+                        <i class="ph ph-google-logo"></i>
+                        <span>Connect Gmail</span>
                     </button>
                 </div>
                 <div id="user-section" class="hidden flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-600">
@@ -133,9 +136,7 @@
         <!-- VIEWPORT -->
         <main class="flex-1 overflow-auto p-8 relative">
 
-            <!-- ========================= -->
-            <!-- ALL MODALS                -->
-            <!-- ========================= -->
+            <!-- MODALS -->
 
             <!-- 1. ADD LEAD MODAL -->
             <div id="add-lead-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 fade-in backdrop-blur-sm">
@@ -743,7 +744,6 @@
         const generateId = () => 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
         // --- ENCODING FIX ---
-        // Safely encodes string to Base64 avoiding unescape deprecation/emoji issues
         function toBase64Url(str) {
             const encoder = new TextEncoder();
             const bytes = encoder.encode(str);
@@ -754,7 +754,6 @@
             return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
 
-        // Safely encode subject for Gmail API (RFC 1342)
         function encodeSubject(subject) {
             const encoder = new TextEncoder();
             const bytes = encoder.encode(subject);
@@ -799,21 +798,9 @@
             event_invite: { name: "Exhibition Invitation", subject: "Meet Mobi Hub at Upcoming Exhibition", body: `Hello {Name},\n\nWe are excited to announce that Mobi Hub will be exhibiting at the upcoming trade show.\n\nWe would love to invite you to our booth to discuss how we can support {Company} with our premium used iPhone and Samsung stock.\n\nPlease let us know if you'll be attending so we can schedule a meeting.\n\nBest regards,\nDeepak\nMobi Hub` + SIGNATURE },
             event_followup: { name: "Post-Event Follow-up", subject: "Great connecting at the event - Mobi Hub", body: `Hello {Name},\n\nIt was great meeting you at the event.\n\nFollowing up on our conversation, I'm sharing our latest stock list of iPhones and Samsung devices from our EU warehouses.\n\nLet me know if {Company} has any immediate requirements we can fulfill.\n\nBest regards,\nDeepak\nMobi Hub` + SIGNATURE },
             networking_dinner: { name: "Networking Dinner Invite", subject: "Exclusive Networking Dinner Invite - Mobi Hub", body: `Hello {Name},\n\nDuring the upcoming exhibition, Mobi Hub is hosting an exclusive networking dinner for our trusted partners.\n\nWe would be honored if you could join us for an evening of great food and industry insights.\n\nPlease let me know your availability.\n\nBest regards,\nDeepak\nMobi Hub` + SIGNATURE },
-            circular_tech_awards: {
-                name: "Circular Tech Awards 2026",
-                subject: "Explore participation at Circular Tech Awards 2026 - Berlin",
-                body: `Hello {Name},\n\nHope you’re doing well.\n\nI came across {Company} and thought your work aligns strongly with the circular technology and sustainability ecosystem we are bringing together at Circular Tech Awards 2026 in Berlin on 5 September.\n\nThe event brings together companies from:\n- refurbished electronics\n- circular economy\n- recycling & ESG\n- reverse logistics\n- telecom trade-in\n- sustainable technology\n\nWe are currently inviting selected companies for:\n- award nominations\n- exhibitor participation\n- networking opportunities\n- partnership discussions\n\nGiven your company’s presence in the industry, I believe there could be a strong fit.\n\nWould you be open to a quick conversation to explore potential participation?\n\nBest regards,\nDeepak\nMobi Hub Events` + SIGNATURE
-            },
-            gitex_europe: {
-                name: "GITEX Europe 2026",
-                subject: "GITEX Europe 2026 - Exhibitor & Partnership Opportunities",
-                body: `Hello {Name},\n\nI’m reaching out from Mobi Hub Events regarding GITEX Europe 2026 taking place in Berlin on June 30 / July 1.\n\nWe are currently connecting with innovative companies in the circular tech, refurbished electronics, and sustainability sectors that may be interested in:\n- exhibitor booths\n- sponsorship visibility\n- networking access\n- business partnerships\n- European market exposure\n\nConsidering {Company}’s industry positioning, I felt it would be valuable to connect.\n\nMany participating companies are using the event to expand partnerships, strengthen visibility, and meet buyers and distributors across Europe.\n\nHappy to share further details if of interest.\n\nBest regards,\nDeepak\nMobi Hub Events` + SIGNATURE
-            },
-            berlin_events_partnership: {
-                name: "Berlin Events Partnership",
-                subject: "Partnership Opportunities: Berlin Tech & Circular Economy Events",
-                body: `Hello {Name},\n\nHope all is well.\n\nWe are currently building partnerships and exhibitor participation for upcoming tech and circular economy events in Berlin, including Circular Tech Awards 2026 and GITEX Europe.\n\nYour company stood out due to its involvement in the sustainability / circular technology space, and I thought it would make sense to connect.\n\nSome companies are joining through:\n- nominations\n- exhibitor booths\n- sponsorship packages\n- attendee delegations\n- networking participation\n\nThe focus is on creating meaningful business connections across the refurbished electronics and circular economy ecosystem.\n\nLet me know if you would be interested in exploring participation opportunities.\n\nKind regards,\nDeepak\nMobi Hub Events` + SIGNATURE
-            }
+            circular_tech_awards: { name: "Circular Tech Awards 2026", subject: "Explore participation at Circular Tech Awards 2026 - Berlin", body: `Hello {Name},\n\nHope you’re doing well.\n\nI came across {Company} and thought your work aligns strongly with the circular technology and sustainability ecosystem we are bringing together at Circular Tech Awards 2026 in Berlin on 5 September.\n\nThe event brings together companies from:\n- refurbished electronics\n- circular economy\n- recycling & ESG\n- reverse logistics\n- telecom trade-in\n- sustainable technology\n\nWe are currently inviting selected companies for:\n- award nominations\n- exhibitor participation\n- networking opportunities\n- partnership discussions\n\nGiven your company’s presence in the industry, I believe there could be a strong fit.\n\nWould you be open to a quick conversation to explore potential participation?\n\nBest regards,\nDeepak\nMobi Hub Events` + SIGNATURE },
+            gitex_europe: { name: "GITEX Europe 2026", subject: "GITEX Europe 2026 - Exhibitor & Partnership Opportunities", body: `Hello {Name},\n\nI’m reaching out from Mobi Hub Events regarding GITEX Europe 2026 taking place in Berlin on June 30 / July 1.\n\nWe are currently connecting with innovative companies in the circular tech, refurbished electronics, and sustainability sectors that may be interested in:\n- exhibitor booths\n- sponsorship visibility\n- networking access\n- business partnerships\n- European market exposure\n\nConsidering {Company}’s industry positioning, I felt it would be valuable to connect.\n\nMany participating companies are using the event to expand partnerships, strengthen visibility, and meet buyers and distributors across Europe.\n\nHappy to share further details if of interest.\n\nBest regards,\nDeepak\nMobi Hub Events` + SIGNATURE },
+            berlin_events_partnership: { name: "Berlin Events Partnership", subject: "Partnership Opportunities: Berlin Tech & Circular Economy Events", body: `Hello {Name},\n\nHope all is well.\n\nWe are currently building partnerships and exhibitor participation for upcoming tech and circular economy events in Berlin, including Circular Tech Awards 2026 and GITEX Europe.\n\nYour company stood out due to its involvement in the sustainability / circular technology space, and I thought it would make sense to connect.\n\nSome companies are joining through:\n- nominations\n- exhibitor booths\n- sponsorship packages\n- attendee delegations\n- networking participation\n\nThe focus is on creating meaningful business connections across the refurbished electronics and circular economy ecosystem.\n\nLet me know if you would be interested in exploring participation opportunities.\n\nKind regards,\nDeepak\nMobi Hub Events` + SIGNATURE }
         };
 
         let activeTemplateTab = 'b2b';
@@ -1563,11 +1550,15 @@
                     importedCount++;
                 }
                 
-                state.queue = [...newContacts, ...state.queue];
-                saveQueue();
-                renderQueue();
-                updateDashboard(); 
-                alert(`Imported ${importedCount} contacts.`); 
+                if(importedCount > 0) {
+                    state.queue = [...newContacts, ...state.queue];
+                    saveQueue();
+                    renderQueue();
+                    updateDashboard(); 
+                    alert(`Imported ${importedCount} contacts.`); 
+                } else {
+                    alert("No valid new emails found.");
+                }
                 input.value = ''; 
             };
             reader.readAsText(file);
@@ -1926,7 +1917,7 @@
                     .replace(/{company}/gi, pending.company || '');        
                 
                 if (!processedBody.includes("deepak@mobi-hub.com")) processedBody += SIGNATURE.replace(/\n/g, '<br>');
-                if (!processedBody.includes("reply 'unsubscribe'")) processedBody += `<br><br>If this email isn't relevant, please reply 'unsubscribe' to let me know.`;
+                if (!processedBody.includes("reply 'unsubscribe'")) processedBody += `<br><br>If this email isnt relevant, please reply 'unsubscribe' to let me know.`;
 
                 const emailContent = [
                     `To: ${pending.email}`,
