@@ -223,7 +223,7 @@
                                     Send Now
                                 </button>
                             </div>
-                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-2">This instantly sends the email and removes them from the automated queue.</p>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-2">This instantly sends the email directly to them and removes them from the automated queue.</p>
                         </div>
                         
                         <!-- Sent History Area -->
@@ -250,7 +250,7 @@
                 </div>
             </div>
 
-            <!-- 4. CAMPAIGN MODAL (NEW) -->
+            <!-- 4. CAMPAIGN MODAL -->
             <div id="campaign-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 fade-in backdrop-blur-sm p-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-3xl border border-gray-200 dark:border-gray-700 relative max-h-[90vh] flex flex-col">
                     <button onclick="closeCampaignModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
@@ -440,16 +440,13 @@
             <div id="view-compose" class="hidden-view max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 fade-in">
                 <div class="md:col-span-2 space-y-4">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 h-full flex flex-col">
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-pencil-simple"></i> Compose / Quick Send</h2>
+                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white"><i class="ph ph-pencil-simple"></i> Compose / Edit Template</h2>
                         
-                        <!-- Templates Section -->
                         <div class="mb-4 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden">
-                            <!-- Tabs Header -->
                             <div class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                                 <button id="tab-b2b" onclick="switchTemplateTab('b2b')" class="flex-1 py-2 text-sm font-bold text-center text-blue-700 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors bg-white dark:bg-gray-800">B2B Templates</button>
                                 <button id="tab-events" onclick="switchTemplateTab('events')" class="flex-1 py-2 text-sm font-bold text-center text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 border-b-2 border-transparent transition-colors">Event Templates</button>
                             </div>
-                            
                             <div class="p-4 bg-blue-50/30 dark:bg-blue-900/10">
                                 <div class="flex justify-between items-center mb-3">
                                     <button onclick="createNewTemplate()" class="text-xs text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-bold flex items-center gap-1 transition-colors">
@@ -464,9 +461,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                
                                 <select id="template-select" onchange="handleTemplateChange(this.value)" class="w-full border border-blue-200 dark:border-blue-800 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white cursor-pointer mb-2">
-                                    <!-- Options populated by JS -->
                                 </select>
                                 <span class="text-[10px] text-gray-500 dark:text-gray-400 block text-right">Pro Tip: Use {Name}, {Company}</span>
                             </div>
@@ -482,8 +477,6 @@
                                     <span>Body</span>
                                     <span class="text-gray-400 dark:text-gray-500 font-normal text-xs">Vars: {Name}, {Company}</span>
                                 </label>
-                                
-                                <!-- RICH TEXT EDITOR TOOLBAR -->
                                 <div class="border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden transition-shadow focus-within:ring-2 focus-within:ring-blue-500 bg-white dark:bg-gray-700 flex-1 flex flex-col">
                                     <div class="flex items-center gap-1 p-2 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
                                         <button onclick="formatDoc('bold')" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded text-gray-700 dark:text-gray-300" title="Bold"><i class="ph-bold ph-text-b"></i></button>
@@ -504,13 +497,11 @@
                     <!-- RUN CAMPAIGN BLOCK -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                         <h3 class="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4 border-b dark:border-gray-700 pb-2">Run Automated Campaign</h3>
-                        
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wide">Select Campaign</label>
                                 <select id="run-camp-select" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white cursor-pointer"></select>
                             </div>
-                            
                             <div class="flex gap-2">
                                 <button onclick="toggleSending(true)" class="btn-start-camp flex-1 flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-md font-medium transition-all shadow-sm hover:shadow">
                                     <i class="ph ph-play-circle text-lg"></i>
@@ -542,8 +533,6 @@
                     <!-- ADD LEADS BLOCK -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                         <h3 class="font-bold text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4 border-b dark:border-gray-700 pb-2">Add Leads to Queue</h3>
-                        
-                        <!-- MANUAL ENTRY -->
                         <div class="mb-4">
                             <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Quick Add / Paste List</label>
                             <textarea id="manual-input" placeholder="email@example.com, Name, Company&#10;another@example.com" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white h-24 resize-none mb-2"></textarea>
@@ -551,13 +540,11 @@
                                 Add to Queue
                             </button>
                         </div>
-
                         <div class="flex items-center gap-2 my-4">
                             <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
                             <span class="text-[10px] text-gray-400 uppercase">OR</span>
                             <div class="h-px bg-gray-200 dark:bg-gray-700 flex-1"></div>
                         </div>
-
                         <label class="w-full flex flex-col items-center justify-center space-y-2 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 cursor-pointer rounded-lg py-6 text-gray-500 dark:text-gray-400 hover:text-blue-600 transition-colors bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 group">
                             <div class="p-2 bg-white dark:bg-gray-600 rounded-full shadow-sm group-hover:scale-110 transition-transform">
                                 <i class="ph ph-upload-simple text-xl dark:text-gray-200"></i>
@@ -754,6 +741,29 @@
     <script>
         // --- HELPER ---
         const generateId = () => 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+        // --- ENCODING FIX ---
+        // Safely encodes string to Base64 avoiding unescape deprecation/emoji issues
+        function toBase64Url(str) {
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(str);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        // Safely encode subject for Gmail API (RFC 1342)
+        function encodeSubject(subject) {
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(subject);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return '=?utf-8?B?' + btoa(binary) + '?=';
+        }
 
         // --- CONFIGURATION ---
         const EMBEDDED_CLIENT_ID = "195749587118-dg3i2gogrq13bns5i2llivlafr21ncav.apps.googleusercontent.com";
@@ -1190,7 +1200,7 @@
 
         function deleteCampaign(id) {
             if(confirm("Delete this campaign record? Queue items will remain but lose their campaign tracking.")) {
-                state.campaigns = state.campaigns.filter(c => c.id !== id);
+                state.campaigns = state.campaigns.filter(c => String(c.id) !== String(id));
                 saveCampaigns();
                 renderCampaigns();
             }
@@ -1198,7 +1208,7 @@
 
         function getCampaignName(id) {
             if(!id) return 'Manual / General';
-            const camp = state.campaigns.find(c => c.id === id);
+            const camp = state.campaigns.find(c => String(c.id) === String(id));
             return camp ? camp.name : 'Deleted Campaign';
         }
 
@@ -1213,9 +1223,9 @@
 
             let html = '';
             state.campaigns.forEach(camp => {
-                const sent = state.sentLog.filter(l => l.campaignId === camp.id && l.status === 'sent').length;
-                const replied = state.sentLog.filter(l => l.campaignId === camp.id && l.status === 'replied').length;
-                const failed = state.queue.filter(q => q.campaignId === camp.id && q.status === 'failed').length;
+                const sent = state.sentLog.filter(l => String(l.campaignId) === String(camp.id) && l.status === 'sent').length;
+                const replied = state.sentLog.filter(l => String(l.campaignId) === String(camp.id) && l.status === 'replied').length;
+                const failed = state.queue.filter(q => String(q.campaignId) === String(camp.id) && q.status === 'failed').length;
                 
                 const progress = camp.total > 0 ? Math.round(((sent + replied + failed) / camp.total) * 100) : 0;
                 
@@ -1566,8 +1576,8 @@
 
         // --- CONTACT ACTIONS (QUICK SEND / HISTORY) ---
         function openContactActionModal(id) {
-            currentContactId = id.toString();
-            const contact = state.queue.find(c => c.id.toString() === currentContactId);
+            currentContactId = String(id);
+            const contact = state.queue.find(c => String(c.id) === currentContactId);
             if (!contact) return;
 
             document.getElementById('contact-action-title').textContent = contact.first_name + (contact.company ? ` (${contact.company})` : '');
@@ -1644,7 +1654,7 @@
                 return;
             }
 
-            const contact = state.queue.find(c => c.id.toString() === currentContactId.toString());
+            const contact = state.queue.find(c => String(c.id) === currentContactId);
             if(!contact) {
                 alert('Contact not found in queue.');
                 return;
@@ -1671,12 +1681,12 @@
 
                 const emailContent = [
                     `To: ${contact.email}`,
-                    `Subject: ${processedSubject}`,
+                    `Subject: ${encodeSubject(processedSubject)}`,
                     `Content-Type: text/html; charset="UTF-8"`,
                     `MIME-Version: 1.0`,
                     ``,
                     processedBody
-                ].join('\n');
+                ].join('\r\n');
 
                 const raw = toBase64Url(emailContent);
 
@@ -1701,7 +1711,7 @@
                 state.sentLog.unshift(newLog);
                 localStorage.setItem('gsafe_sent_log', JSON.stringify(state.sentLog));
                 
-                state.queue = state.queue.filter(q => q.id.toString() !== currentContactId.toString());
+                state.queue = state.queue.filter(q => String(q.id) !== currentContactId);
                 saveQueue();
 
                 renderSentLog();
@@ -1744,7 +1754,7 @@
             btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> Sending...`;
             btn.disabled = true;
 
-            const emailContent = [`To: ${testEmail}`, `Subject: ${processedSubject}`, `Content-Type: text/html; charset="UTF-8"`, `MIME-Version: 1.0`, ``, processedBody].join('\n');
+            const emailContent = [`To: ${testEmail}`, `Subject: ${encodeSubject(processedSubject)}`, `Content-Type: text/html; charset="UTF-8"`, `MIME-Version: 1.0`, ``, processedBody].join('\r\n');
             const raw = toBase64Url(emailContent);
 
             try {
@@ -1783,7 +1793,7 @@
         // --- QUEUE ACTIONS ---
         function deleteItem(id) {
             if (confirm('Remove this item from queue?')) {
-                state.queue = state.queue.filter(item => item.id.toString() !== id.toString());
+                state.queue = state.queue.filter(item => String(item.id) !== String(id));
                 saveQueue(); renderQueue(); updateDashboard();
             }
         }
@@ -1800,7 +1810,7 @@
         }
 
         function openEditModal(id) {
-            const item = state.queue.find(i => i.id.toString() === id.toString());
+            const item = state.queue.find(i => String(i.id) === String(id));
             if (!item) return;
 
             document.getElementById('edit-id').value = item.id;
@@ -1822,7 +1832,7 @@
             const company = document.getElementById('edit-company').value;
 
             state.queue = state.queue.map(item => {
-                if (item.id.toString() === id.toString()) {
+                if (String(item.id) === String(id)) {
                     return { ...item, email, first_name: name, company };
                 }
                 return item;
@@ -1920,12 +1930,12 @@
 
                 const emailContent = [
                     `To: ${pending.email}`,
-                    `Subject: ${processedSubject}`,
+                    `Subject: ${encodeSubject(processedSubject)}`,
                     `Content-Type: text/html; charset="UTF-8"`,
                     `MIME-Version: 1.0`,
                     ``,
                     processedBody
-                ].join('\n');
+                ].join('\r\n');
 
                 const raw = toBase64Url(emailContent);
 
@@ -2078,9 +2088,9 @@
                 <tr class="hover:bg-gray-50 border-b border-gray-100 dark:border-gray-700 dark:hover:bg-gray-700">
                     <td class="px-6 py-3 text-gray-500 dark:text-gray-400 text-xs font-mono">${index + 1}</td>
                     <td class="px-6 py-3"><span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] uppercase font-bold text-gray-600 dark:text-gray-300 truncate max-w-[100px] inline-block" title="${getCampaignName(item.campaignId)}">${getCampaignName(item.campaignId)}</span></td>
-                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.company}</td>
-                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.first_name}</td>
-                    <td class="px-6 py-3 text-gray-800 dark:text-gray-200">${item.email}</td>
+                    <td class="px-6 py-3 text-gray-800 dark:text-gray-200 font-medium">${item.company || '-'}</td>
+                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.first_name || '-'}</td>
+                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.email}</td>
                     <td class="px-6 py-3">
                         ${item.status === 'pending' 
                             ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200">Pending</span>'
