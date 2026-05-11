@@ -113,15 +113,12 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <!-- Auto Save Indicator -->
                 <div id="save-status" class="opacity-0 text-xs text-gray-400 dark:text-gray-500 font-medium flex items-center gap-1">
                     <i class="ph-bold ph-check"></i> Saved
                 </div>
-
                 <div id="auth-section">
                     <button onclick="initGoogleAuth()" class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">
-                        <i class="ph ph-google-logo"></i>
-                        <span>Connect Gmail</span>
+                        <i class="ph ph-google-logo"></i><span>Connect Gmail</span>
                     </button>
                 </div>
                 <div id="user-section" class="hidden flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-600">
@@ -513,7 +510,7 @@
                                     <span>Pause</span>
                                 </button>
                             </div>
-                            <p class="text-[10px] text-gray-500 dark:text-gray-400 text-center">Sends automatically in the background every 2-3 mins.</p>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 text-center">Sends automatically based on the delay defined in Settings.</p>
                         </div>
                     </div>
 
@@ -693,7 +690,29 @@
                                 Required for secure Gmail connection. <a href="https://console.cloud.google.com/" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Get it here</a>.
                             </p>
                         </div>
-                        <button onclick="saveSettings()" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors">Save ID</button>
+
+                        <!-- NEW DELAY SETTINGS -->
+                        <div class="pt-6 border-t border-gray-200 dark:border-gray-700 mt-6">
+                            <h4 class="text-sm font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
+                                <i class="ph ph-clock"></i> Automated Sending Speed
+                            </h4>
+                            <div class="flex items-center gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wide">Min Delay (Secs)</label>
+                                    <input type="number" id="setting-min-delay" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white" min="10" placeholder="120">
+                                </div>
+                                <div class="text-gray-400 font-bold mt-4">to</div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wide">Max Delay (Secs)</label>
+                                    <input type="number" id="setting-max-delay" class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white" min="10" placeholder="180">
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                The queue will randomly wait between these values to mimic human sending and prevent spam detection. Default is 120 to 180 seconds.
+                            </p>
+                        </div>
+                        
+                        <button onclick="saveSettings()" class="bg-gray-800 dark:bg-gray-700 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors">Save Settings</button>
                         
                         <!-- DATA MANAGEMENT SECTION -->
                         <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -744,24 +763,17 @@
         const generateId = () => 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
         // --- ENCODING FIX ---
+        // Safely encode emojis and multi-byte UTF-8 for Gmail API base64 requirements
         function toBase64Url(str) {
-            const encoder = new TextEncoder();
-            const bytes = encoder.encode(str);
-            let binary = '';
-            for (let i = 0; i < bytes.byteLength; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            const bytes = new TextEncoder().encode(str);
+            const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join("");
+            return btoa(binString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
 
         function encodeSubject(subject) {
-            const encoder = new TextEncoder();
-            const bytes = encoder.encode(subject);
-            let binary = '';
-            for (let i = 0; i < bytes.byteLength; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            return '=?utf-8?B?' + btoa(binary) + '?=';
+            const bytes = new TextEncoder().encode(subject);
+            const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join("");
+            return '=?utf-8?B?' + btoa(binString) + '?=';
         }
 
         // --- CONFIGURATION ---
@@ -775,6 +787,11 @@
             isSending: false,
             runningCampaignId: 'all',
             clientId: EMBEDDED_CLIENT_ID !== "PASTE_YOUR_CLIENT_ID_HERE" ? EMBEDDED_CLIENT_ID : (localStorage.getItem('gsafe_client_id') || ''),
+            
+            // Delays
+            minDelay: parseInt(localStorage.getItem('gsafe_min_delay'), 10) || 120,
+            maxDelay: parseInt(localStorage.getItem('gsafe_max_delay'), 10) || 180,
+
             subject: localStorage.getItem('gsafe_subject') || '',
             body: localStorage.getItem('gsafe_body') || 'Hello {Name},<br><br>I noticed that {Company} is doing great work...<br><br>Best,<br>[Your Name]' + SIGNATURE.replace(/\n/g, '<br>'),
             queue: JSON.parse(localStorage.getItem('gsafe_queue') || '[]'),
@@ -806,6 +823,195 @@
         let activeTemplateTab = 'b2b';
         let allTemplates = { b2b: {}, events: {} };
 
+        // --- SPINTAX & REPLIES FIX ---
+        function processSpintax(text) {
+            if(!text) return "";
+            return text.replace(/\{([^{}]+)\}/g, function(match, content) {
+                if (content.toLowerCase().includes('name') || content.toLowerCase().includes('company')) {
+                    return match;
+                }
+                const choices = content.split('|');
+                return choices[Math.floor(Math.random() * choices.length)];
+            });
+        }
+
+        async function checkInboxForReplies() {
+            if (!state.token) {
+                alert("Please connect Gmail first.");
+                return;
+            }
+            updateStatus("Scanning inbox for replies...");
+            
+            try {
+                const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages?q=label:INBOX&maxResults=50', {
+                    headers: { Authorization: `Bearer ${state.token}` }
+                });
+                const data = await res.json();
+                
+                if (!data.messages) {
+                    alert("No new messages found in Inbox.");
+                    updateStatus("Scan complete.");
+                    return;
+                }
+
+                let replyCount = 0;
+                
+                for (let msg of data.messages) {
+                    const detailRes = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${msg.id}?format=metadata&metadataHeaders=From`, {
+                        headers: { Authorization: `Bearer ${state.token}` }
+                    });
+                    const detail = await detailRes.json();
+                    if(detail && detail.payload && detail.payload.headers) {
+                        const fromHeader = detail.payload.headers.find(h => h.name === 'From');
+                        
+                        if (fromHeader) {
+                            const fromEmailMatch = fromHeader.value.match(/<([^>]+)>/) || [null, fromHeader.value];
+                            const fromEmail = fromEmailMatch[1] || fromHeader.value;
+                            
+                            const logIndex = state.sentLog.findIndex(l => l.email.toLowerCase() === fromEmail.toLowerCase() && l.status === 'sent');
+                            
+                            if (logIndex !== -1) {
+                                state.sentLog[logIndex].status = 'replied';
+                                replyCount++;
+                            }
+                        }
+                    }
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                
+                localStorage.setItem('gsafe_sent_log', JSON.stringify(state.sentLog));
+                renderSentLog();
+                updateDashboard(); 
+                alert(`Scan complete. Found ${replyCount} new replies.`);
+                updateStatus(`Found ${replyCount} replies.`);
+                
+            } catch (e) {
+                console.error(e);
+                alert("Error scanning inbox. Check console.");
+            }
+        }
+
+        function queueFollowUps() {
+            const nonRepliers = state.sentLog.filter(l => l.status === 'sent');
+            if (nonRepliers.length === 0) {
+                alert("No non-repliers found to follow up with.");
+                return;
+            }
+            
+            const confirmed = confirm(`Found ${nonRepliers.length} contacts who haven't replied yet.\n\nAdd them to queue for follow-up? (Make sure to change your template first!)`);
+            
+            if (confirmed) {
+                const newBatch = nonRepliers.map(c => ({
+                    id: generateId(),
+                    email: c.email,
+                    first_name: 'there', 
+                    company: '',
+                    status: 'pending',
+                    campaignId: null
+                }));
+                
+                state.queue = [...newBatch, ...state.queue];
+                saveQueue();
+                renderQueue();
+                updateDashboard(); 
+                switchView('queue');
+                alert("Contacts added to queue. Please update your Subject/Body for the follow-up email.");
+            }
+        }
+
+        // --- DASHBOARD RENDERING ---
+        function getStats() {
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            const day = now.getDay() || 7; 
+            if(day !== 1) now.setHours(-24 * (day - 1));
+            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (day-1)); 
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+            let daily = 0; let weekly = 0; let monthly = 0;
+            const monthlyHistory = {};
+
+            state.sentLog.forEach(log => {
+                if (!log.timestamp) return;
+                const d = new Date(log.timestamp);
+                
+                if (d >= startOfDay) daily++;
+                if (d >= startOfWeek) weekly++;
+                if (d >= startOfMonth) monthly++;
+
+                const monthKey = d.toLocaleString('default', { month: 'short', year: 'numeric' });
+                if (!monthlyHistory[monthKey]) monthlyHistory[monthKey] = 0;
+                monthlyHistory[monthKey]++;
+            });
+
+            return { daily, weekly, monthly, monthlyHistory };
+        }
+
+        function updateDashboard() {
+            const count = getSentTodayCount();
+            const stats = getStats();
+            
+            const dailyCountEl = document.getElementById('daily-count');
+            if(dailyCountEl) dailyCountEl.textContent = count;
+            
+            const percent = Math.min((count / 100) * 100, 100);
+            const bar = document.getElementById('daily-bar');
+            if(bar) {
+                bar.style.width = `${percent}%`;
+                bar.className = `h-1.5 rounded-full transition-all duration-500 ${count >= 100 ? 'bg-red-500' : 'bg-blue-500'}`;
+            }
+
+            const dashSent = document.getElementById('dash-sent');
+            if(dashSent) dashSent.textContent = stats.daily; 
+
+            const dashWeekly = document.getElementById('dash-weekly');
+            if(dashWeekly) dashWeekly.textContent = stats.weekly;
+
+            const dashMonthly = document.getElementById('dash-monthly');
+            if(dashMonthly) dashMonthly.textContent = stats.monthly;
+
+            const dashQueue = document.getElementById('dash-queue');
+            if(dashQueue) dashQueue.textContent = state.queue.filter(q => q.status === 'pending').length;
+
+            const dashReplies = document.getElementById('dash-replies');
+            if(dashReplies) dashReplies.textContent = state.sentLog.filter(l => l.status === 'replied').length;
+
+            const dashStatus = document.getElementById('dash-status');
+            if(dashStatus) {
+                if(state.isSending) {
+                    let campName = "All Pending";
+                    if(state.runningCampaignId && state.runningCampaignId !== 'all') {
+                         campName = getCampaignName(state.runningCampaignId);
+                    }
+                    dashStatus.innerHTML = `<span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span> Running`;
+                    dashStatus.className = "text-lg font-bold text-green-600 flex items-center gap-2 md:justify-end";
+                    updateStatus(`Running: ${campName}`);
+                } else {
+                    dashStatus.innerHTML = `<span class="w-3 h-3 rounded-full bg-gray-400"></span> Paused`;
+                    dashStatus.className = "text-lg font-bold text-gray-500 flex items-center gap-2 md:justify-end";
+                    if(!state.isSending) updateStatus("Paused by user");
+                }
+            }
+            
+            const dashTbody = document.getElementById('dash-history-body');
+            if (dashTbody) {
+                dashTbody.innerHTML = '';
+                if (Object.keys(stats.monthlyHistory).length === 0) {
+                    dashTbody.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500 text-xs">No activity yet.</td></tr>`;
+                } else {
+                    for (const [month, count] of Object.entries(stats.monthlyHistory)) {
+                        dashTbody.innerHTML += `
+                            <tr class="border-b dark:border-gray-700">
+                                <td class="px-6 py-3 text-gray-800 dark:text-gray-200 text-sm">${month}</td>
+                                <td class="px-6 py-3 text-right text-gray-600 dark:text-gray-400 font-mono text-sm">${count}</td>
+                            </tr>
+                        `;
+                    }
+                }
+            }
+        }
+
         // --- INIT ---
         window.onload = function() {
             if (localStorage.getItem('gsafe_theme') === 'dark') document.documentElement.classList.add('dark');
@@ -814,9 +1020,20 @@
             populateCampTemplates();
             populateRunCampaignSelect();
 
-            document.getElementById('client-id-input').value = state.clientId;
-            document.getElementById('email-subject').value = state.subject;
-            document.getElementById('email-body').innerHTML = state.body;
+            const clientIdEl = document.getElementById('client-id-input');
+            if(clientIdEl) clientIdEl.value = state.clientId;
+            
+            const minDelayEl = document.getElementById('setting-min-delay');
+            if(minDelayEl) minDelayEl.value = state.minDelay;
+            
+            const maxDelayEl = document.getElementById('setting-max-delay');
+            if(maxDelayEl) maxDelayEl.value = state.maxDelay;
+
+            const emailSubjectEl = document.getElementById('email-subject');
+            if(emailSubjectEl) emailSubjectEl.value = state.subject;
+            
+            const emailBodyEl = document.getElementById('email-body');
+            if(emailBodyEl) emailBodyEl.innerHTML = state.body;
             
             const storedToken = sessionStorage.getItem('gsafe_auth_token');
             const storedExpiry = sessionStorage.getItem('gsafe_auth_expiry');
@@ -854,20 +1071,26 @@
 
             switchView('dashboard'); 
             
-            document.getElementById('client-id-input').addEventListener('input', (e) => {
-                state.clientId = e.target.value;
-                localStorage.setItem('gsafe_client_id', state.clientId);
-            });
-            document.getElementById('email-subject').addEventListener('input', (e) => {
-                state.subject = e.target.value;
-                localStorage.setItem('gsafe_subject', state.subject);
-                showSaveStatus();
-            });
-            document.getElementById('email-body').addEventListener('input', (e) => {
-                state.body = e.target.innerHTML;
-                localStorage.setItem('gsafe_body', state.body);
-                showSaveStatus();
-            });
+            if(clientIdEl) {
+                clientIdEl.addEventListener('input', (e) => {
+                    state.clientId = e.target.value;
+                    localStorage.setItem('gsafe_client_id', state.clientId);
+                });
+            }
+            if(emailSubjectEl) {
+                emailSubjectEl.addEventListener('input', (e) => {
+                    state.subject = e.target.value;
+                    localStorage.setItem('gsafe_subject', state.subject);
+                    showSaveStatus();
+                });
+            }
+            if(emailBodyEl) {
+                emailBodyEl.addEventListener('input', (e) => {
+                    state.body = e.target.innerHTML;
+                    localStorage.setItem('gsafe_body', state.body);
+                    showSaveStatus();
+                });
+            }
         };
 
         // --- NAVIGATION ---
@@ -923,11 +1146,11 @@
              const tabB2B = document.getElementById('tab-b2b');
              const tabEvents = document.getElementById('tab-events');
              if(tab === 'b2b') {
-                 tabB2B.className = "flex-1 py-2 text-sm font-bold text-center text-blue-700 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors bg-white dark:bg-gray-800";
-                 tabEvents.className = "flex-1 py-2 text-sm font-bold text-center text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 border-b-2 border-transparent transition-colors";
+                 if(tabB2B) tabB2B.className = "flex-1 py-2 text-sm font-bold text-center text-blue-700 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors bg-white dark:bg-gray-800";
+                 if(tabEvents) tabEvents.className = "flex-1 py-2 text-sm font-bold text-center text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 border-b-2 border-transparent transition-colors";
              } else {
-                 tabEvents.className = "flex-1 py-2 text-sm font-bold text-center text-blue-700 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors bg-white dark:bg-gray-800";
-                 tabB2B.className = "flex-1 py-2 text-sm font-bold text-center text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 border-b-2 border-transparent transition-colors";
+                 if(tabEvents) tabEvents.className = "flex-1 py-2 text-sm font-bold text-center text-blue-700 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400 transition-colors bg-white dark:bg-gray-800";
+                 if(tabB2B) tabB2B.className = "flex-1 py-2 text-sm font-bold text-center text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 border-b-2 border-transparent transition-colors";
              }
              renderTemplateDropdown();
         }
@@ -1290,6 +1513,22 @@
             }
         }
 
+        function saveSettings() {
+            const minEl = document.getElementById('setting-min-delay');
+            const maxEl = document.getElementById('setting-max-delay');
+            const clientEl = document.getElementById('client-id-input');
+
+            if(clientEl) state.clientId = clientEl.value;
+            if(minEl) state.minDelay = parseInt(minEl.value, 10) || 120;
+            if(maxEl) state.maxDelay = parseInt(maxEl.value, 10) || 180;
+            
+            localStorage.setItem('gsafe_client_id', state.clientId);
+            localStorage.setItem('gsafe_min_delay', state.minDelay);
+            localStorage.setItem('gsafe_max_delay', state.maxDelay);
+            
+            alert('Settings Saved');
+        }
+
         // --- BACKUP & RESTORE LOGIC ---
         function downloadBackup() {
             const backup = {
@@ -1301,7 +1540,9 @@
                 custom_b2b: localStorage.getItem('gsafe_custom_b2b'),
                 custom_events: localStorage.getItem('gsafe_custom_events'),
                 campaigns: localStorage.getItem('gsafe_campaigns'),
-                theme: localStorage.getItem('gsafe_theme')
+                theme: localStorage.getItem('gsafe_theme'),
+                min_delay: localStorage.getItem('gsafe_min_delay'),
+                max_delay: localStorage.getItem('gsafe_max_delay')
             };
 
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup));
@@ -1330,6 +1571,8 @@
                     if (backup.custom_events) localStorage.setItem('gsafe_custom_events', backup.custom_events);
                     if (backup.campaigns) localStorage.setItem('gsafe_campaigns', backup.campaigns);
                     if (backup.theme) localStorage.setItem('gsafe_theme', backup.theme);
+                    if (backup.min_delay) localStorage.setItem('gsafe_min_delay', backup.min_delay);
+                    if (backup.max_delay) localStorage.setItem('gsafe_max_delay', backup.max_delay);
                     alert("Data restored successfully! The page will now reload.");
                     window.location.reload();
                 } catch (err) {
@@ -1754,7 +1997,10 @@
                     body: JSON.stringify({ raw })
                 });
 
-                if (!res.ok) throw new Error('Send Failed');
+                if (!res.ok) {
+                    const err = await res.text();
+                    throw new Error(`Gmail API Error: ${err}`);
+                }
                 
                 // Add to Sent Logs manually
                 const now = new Date();
@@ -1774,7 +2020,8 @@
                 alert('Email sent to ' + testEmail);
                 document.getElementById('test-email-input').value = ''; 
             } catch (e) {
-                alert('Error sending email: ' + e.message);
+                alert(`Error sending email: ${e.message}`);
+                console.error(e);
             } finally {
                 btn.innerHTML = `<i class="ph-bold ph-paper-plane-right"></i> Send Now`;
                 btn.disabled = false;
@@ -1874,8 +2121,6 @@
         let isProcessing = false;
 
         async function processQueue() {
-            updateDashboard(); 
-
             if (!state.isSending || isProcessing || !state.token) return;
 
             if (Date.now() < state.nextSendTime) {
@@ -1936,7 +2181,10 @@
                     body: JSON.stringify({ raw })
                 });
 
-                if (!res.ok) throw new Error('Send Failed');
+                if (!res.ok) {
+                    const err = await res.text();
+                    throw new Error(`Gmail API Error: ${err}`);
+                }
 
                 const now = new Date();
                 const newLog = {
@@ -1967,180 +2215,16 @@
                 isProcessing = false;
                 renderQueue();
                 renderSentLog();
-                renderCampaigns(); // update progress bar
+                renderCampaigns(); 
                 updateDashboard();
                 
-                const delay = 120000 + (Math.random() * 60000);
+                // Calculate Dynamic Delay
+                const minDelayMs = (state.minDelay || 120) * 1000;
+                const maxDelayMs = (state.maxDelay || 180) * 1000;
+                const delay = minDelayMs + (Math.random() * (maxDelayMs - minDelayMs));
+                
                 state.nextSendTime = Date.now() + delay;
             }
-        }
-
-        // --- DASHBOARD RENDERING ---
-        function getStats() {
-            const now = new Date();
-            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            const day = now.getDay() || 7; 
-            if(day !== 1) now.setHours(-24 * (day - 1));
-            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (day-1)); 
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-            let daily = 0; let weekly = 0; let monthly = 0;
-            const monthlyHistory = {};
-
-            state.sentLog.forEach(log => {
-                if (!log.timestamp) return;
-                const d = new Date(log.timestamp);
-                
-                if (d >= startOfDay) daily++;
-                if (d >= startOfWeek) weekly++;
-                if (d >= startOfMonth) monthly++;
-
-                const monthKey = d.toLocaleString('default', { month: 'short', year: 'numeric' });
-                if (!monthlyHistory[monthKey]) monthlyHistory[monthKey] = 0;
-                monthlyHistory[monthKey]++;
-            });
-
-            return { daily, weekly, monthly, monthlyHistory };
-        }
-
-        function updateDashboard() {
-            const count = getSentTodayCount();
-            const stats = getStats();
-            
-            const dailyCountEl = document.getElementById('daily-count');
-            if(dailyCountEl) dailyCountEl.textContent = count;
-            
-            const percent = Math.min((count / 100) * 100, 100);
-            const bar = document.getElementById('daily-bar');
-            if(bar) {
-                bar.style.width = `${percent}%`;
-                bar.className = `h-1.5 rounded-full transition-all duration-500 ${count >= 100 ? 'bg-red-500' : 'bg-blue-500'}`;
-            }
-
-            const dashSent = document.getElementById('dash-sent');
-            if(dashSent) dashSent.textContent = stats.daily; 
-
-            const dashWeekly = document.getElementById('dash-weekly');
-            if(dashWeekly) dashWeekly.textContent = stats.weekly;
-
-            const dashMonthly = document.getElementById('dash-monthly');
-            if(dashMonthly) dashMonthly.textContent = stats.monthly;
-
-            const dashQueue = document.getElementById('dash-queue');
-            if(dashQueue) dashQueue.textContent = state.queue.filter(q => q.status === 'pending').length;
-
-            const dashReplies = document.getElementById('dash-replies');
-            if(dashReplies) dashReplies.textContent = state.sentLog.filter(l => l.status === 'replied').length;
-
-            const dashStatus = document.getElementById('dash-status');
-            if(dashStatus) {
-                if(state.isSending) {
-                    let campName = "All Pending";
-                    if(state.runningCampaignId && state.runningCampaignId !== 'all') {
-                         campName = getCampaignName(state.runningCampaignId);
-                    }
-                    dashStatus.innerHTML = `<span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span> Running`;
-                    dashStatus.className = "text-lg font-bold text-green-600 flex items-center gap-2 md:justify-end";
-                    updateStatus(`Running: ${campName}`);
-                } else {
-                    dashStatus.innerHTML = `<span class="w-3 h-3 rounded-full bg-gray-400"></span> Paused`;
-                    dashStatus.className = "text-lg font-bold text-gray-500 flex items-center gap-2 md:justify-end";
-                    if(!state.isSending) updateStatus("Paused by user");
-                }
-            }
-            
-            const dashTbody = document.getElementById('dash-history-body');
-            if (dashTbody) {
-                dashTbody.innerHTML = '';
-                if (Object.keys(stats.monthlyHistory).length === 0) {
-                    dashTbody.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500 text-xs">No activity yet.</td></tr>`;
-                } else {
-                    for (const [month, count] of Object.entries(stats.monthlyHistory)) {
-                        dashTbody.innerHTML += `
-                            <tr class="border-b dark:border-gray-700">
-                                <td class="px-6 py-3 text-gray-800 dark:text-gray-200 text-sm">${month}</td>
-                                <td class="px-6 py-3 text-right text-gray-600 dark:text-gray-400 font-mono text-sm">${count}</td>
-                            </tr>
-                        `;
-                    }
-                }
-            }
-        }
-
-        function renderQueue() {
-            const tbody = document.getElementById('queue-table-body');
-            if(!tbody) return;
-            if (state.queue.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-400 dark:text-gray-500">Queue is empty</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = state.queue.map((item, index) => `
-                <tr class="hover:bg-gray-50 border-b border-gray-100 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <td class="px-6 py-3 text-gray-500 dark:text-gray-400 text-xs font-mono">${index + 1}</td>
-                    <td class="px-6 py-3"><span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] uppercase font-bold text-gray-600 dark:text-gray-300 truncate max-w-[100px] inline-block" title="${getCampaignName(item.campaignId)}">${getCampaignName(item.campaignId)}</span></td>
-                    <td class="px-6 py-3 text-gray-800 dark:text-gray-200 font-medium">${item.company || '-'}</td>
-                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.first_name || '-'}</td>
-                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400">${item.email}</td>
-                    <td class="px-6 py-3">
-                        ${item.status === 'pending' 
-                            ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200">Pending</span>'
-                            : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">Failed</span>'
-                        }
-                    </td>
-                    <td class="px-6 py-3 text-right whitespace-nowrap">
-                        <button onclick="openContactActionModal('${item.id}')" class="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 mr-3" title="Quick Send / History">
-                            <i class="ph-bold ph-paper-plane-tilt"></i>
-                        </button>
-                        ${item.status === 'pending' ? `
-                        <button onclick="openEditModal('${item.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mr-3" title="Edit">
-                            <i class="ph-bold ph-pencil-simple"></i>
-                        </button>
-                        <button onclick="deleteItem('${item.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Remove">
-                            <i class="ph-bold ph-trash"></i>
-                        </button>
-                        ` : ''}
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function formatLogDate(isoStr) {
-            if (!isoStr) return '-';
-            const date = new Date(isoStr);
-            const day = getOrdinal(date.getDate());
-            const month = date.toLocaleString('en-US', { month: 'short' });
-            const year = date.getFullYear();
-            const time = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-            return `${day} ${month} ${year}, ${time}`;
-        }
-
-        function renderSentLog() {
-            const tbody = document.getElementById('sent-table-body');
-            if(!tbody) return;
-            if (state.sentLog.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-400 dark:text-gray-500">No emails sent yet</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = state.sentLog.map((log, index) => `
-                <tr class="hover:bg-gray-50 border-b border-gray-100 dark:border-gray-700 dark:hover:bg-gray-700 ${log.status === 'replied' ? 'bg-green-50 dark:bg-green-900/10' : ''}">
-                    <td class="px-6 py-3 text-gray-500 dark:text-gray-400 text-xs font-mono">${state.sentLog.length - index}</td>
-                    <td class="px-6 py-3 text-gray-600 dark:text-gray-400 text-xs font-mono">${formatLogDate(log.timestamp)}</td>
-                    <td class="px-6 py-3"><span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-[10px] uppercase font-bold text-gray-600 dark:text-gray-300 truncate max-w-[100px] inline-block" title="${getCampaignName(log.campaignId)}">${getCampaignName(log.campaignId)}</span></td>
-                    <td class="px-6 py-3 text-gray-800 dark:text-gray-200">${log.email}</td>
-                    <td class="px-6 py-3">
-                        ${log.status === 'sent' 
-                           ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-600 dark:text-gray-300">Sent</span>' 
-                           : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"><i class="ph-bold ph-arrow-u-left-up mr-1"></i> Replied</span>'
-                        }
-                    </td>
-                    <td class="px-6 py-3 text-right">
-                        <button onclick="deleteSentLog('${log.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" title="Delete Log">
-                            <i class="ph-bold ph-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
         }
     </script>
 </body>
